@@ -1,35 +1,16 @@
 import cv2
-# import numpy as np
 import os
 
-# import pandas as pd
-# from scipy import signal
-# from PIL import Image, ImageDraw
-# import nibabel as nib
-
-# import subprocess
-
+import logging
 import csv
-# import pandas
-# import geopy.distance
-# import keyboard
-# import math
-# import time
-#from matplotlib import pyplot as plt
-import os
 
 path, dirs, files = next(os.walk("public/images/"))
 file_count = len(files)
-# print (file_count)
-# Calculate the correlation using SURF & BFMatcher
 
-
-# load all the images
+logging.basicConfig(level=logging.NOTSET)
 
 all_images = []
 titles = []
-
-# max=len(point)
 
 max = file_count
 min = 0
@@ -50,20 +31,23 @@ for a in range(min, max):
 
     if pic_num < max:
         pic_num = pic_num + 1
-print("finish reading")
+
+logging.info("finish reading")
+logging.debug("finish reading")
+logging.warning("finish reading")
+logging.error("finish reading")
+logging.critical("finish reading")
+
 
 correlations = []
-# read 2 pic
-# os.remove("satellite_1.csv")
+
 for b in range(min, max):
     original = cv2.imread(
-        "E:/Major/m2/public/images/result" + str(b) + ".png",
+        "public/images/result" + str(b) + ".png",
         cv2.IMREAD_GRAYSCALE)
     image_to_compare = cv2.imread(
         "public/images/result" + str(b) + ".png",
         cv2.IMREAD_GRAYSCALE)
-    # original = cv2.imread("/home/barak/Documents/university/thesis/python/detect_how_similar_images_are/images/different-golden-gate-bridge.jpg")
-    # image_to_compare = cv2.imread("/home/barak/Documents/university/thesis/python/detect_how_similar_images_are/images/duplicate.jpg")
 
     orb = cv2.SIFT_create()
     kp_1, desc_1 = orb.detectAndCompute(original, None)
@@ -76,6 +60,7 @@ for b in range(min, max):
         number_keypoints_original = len(kp_1)
     else:
         number_keypoints_original = len(kp_2)
+    # number_keypoints_original = min(len(kp_1), len(kp_2))
 
     cv2.imshow("correspondences", original)
     cv2.waitKey()
@@ -117,21 +102,7 @@ for b in range(min, max):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
-        # with open(save_to, mode='a') as csv_file:
-        #     fieldnames = ['file_number', 'corelation']
-        #     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        #     writer.writerow({'file_number': title, 'corelation': percentage_similarity})
         correlations.append(percentage_similarity)
-
-    # with open(save_to, mode='w') as csv_file:
-    #     with open(org, mode='r') as org_csv:
-    #         fieldnames = ['frame1', 'frame2', 'distance', 'correlation']
-    #         reader = csv.reader(org_csv)
-    #         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    #
-    #         for row in reader:
-    #             writer.writerow({'frame1': row[0], 'frame2': row[1], 'distance': row[2], 'correlation': percentage_similarity})
-    #             #print({'frame1': row['frame1'], 'frame2': row['frame2'], 'distance': row['distance'], 'correlation': percentage_similarity})
 
 with open(org, 'r') as f:
     with open(save_to, 'w') as f1:
@@ -139,8 +110,9 @@ with open(org, 'r') as f:
         for line in f:
             f1.write(line)
 
-
+print(correlations)
 print(len(correlations))
+
 with open(save_to, 'r') as csvinput:
     with open(save_to_final, 'w') as csvoutput:
         writer = csv.writer(csvoutput)
