@@ -4,6 +4,9 @@ import os
 import logging
 import csv
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 path, dirs, files = next(os.walk("public/images/"))
 file_count = len(files)
 
@@ -45,29 +48,29 @@ for b in range(min, max):
     original = cv2.imread(
         "public/images/result" + str(b) + ".png",
         cv2.IMREAD_GRAYSCALE)
-    image_to_compare = cv2.imread(
-        "public/images/result" + str(b) + ".png",
-        cv2.IMREAD_GRAYSCALE)
+    # image_to_compare = cv2.imread(
+    #     "public/images/result" + str(b) + ".png",
+    #     cv2.IMREAD_GRAYSCALE)
 
     orb = cv2.SIFT_create()
     kp_1, desc_1 = orb.detectAndCompute(original, None)
-    kp_2, desc_2 = orb.detectAndCompute(image_to_compare, None)
+    # kp_2, desc_2 = orb.detectAndCompute(image_to_compare, None)
 
     bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=False)
-    matches = bf.match(desc_1, desc_2)
+    # matches = bf.match(desc_1, desc_2)
 
-    if len(kp_1) <= len(kp_2):
-        number_keypoints_original = len(kp_1)
-    else:
-        number_keypoints_original = len(kp_2)
+    # if len(kp_1) <= len(kp_2):
+    number_keypoints_original = len(kp_1)
+    # else:
+    #     number_keypoints_original = len(kp_2)
     # number_keypoints_original = min(len(kp_1), len(kp_2))
 
-    cv2.imshow("correspondences", original)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+    # cv2.imshow("correspondences", original)
+    # cv2.waitKey()
+    # cv2.destroyAllWindows()
 
-    orb = cv2.SIFT_create()
-    kp_1, desc_1 = orb.detectAndCompute(original, None)
+    # orb = cv2.SIFT_create()
+    # kp_1, desc_1 = orb.detectAndCompute(original, None)
 
     for image_to_compare, title in zip(all_images, titles):
 
@@ -93,16 +96,17 @@ for b in range(min, max):
                 number_keypoints = len(kp_2)
             percentage_similarity = (len(good_points) / number_keypoints_original) * 100
             print("now frame " + str(b) + " VS " + title + " Similarity: " + str(int(percentage_similarity)) + "%\n")
+            
+            result = cv2.drawMatches(original, kp_1, image_to_compare, kp_2, good_points, None)
+            # cv2.imshow("result", cv2.resize(result, None, fx=5.8, fy=6.8))
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+
+            correlations.append(percentage_similarity/100.0)
         except:
             percentage_similarity = 0
             print("now frame " + str(b) + " VS " + title + " Similarity: " + str(int(percentage_similarity)) + "%\n")
 
-        result = cv2.drawMatches(original, kp_1, image_to_compare, kp_2, good_points, None)
-        cv2.imshow("result", cv2.resize(result, None, fx=5.8, fy=6.8))
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-        correlations.append(percentage_similarity)
 
 with open(org, 'r') as f:
     with open(save_to, 'w') as f1:
@@ -112,6 +116,15 @@ with open(org, 'r') as f:
 
 print(correlations)
 print(len(correlations))
+
+x = np.arange(1, len(correlations)+1)
+y = np.array(correlations)
+
+plt.title("Line graph")
+plt.ylabel("Probability of Attack")
+plt.xlabel("Time")
+plt.plot(x, y, color ="green")
+plt.show()
 
 with open(save_to, 'r') as csvinput:
     with open(save_to_final, 'w') as csvoutput:
