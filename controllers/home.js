@@ -42,6 +42,11 @@ exports.finishProcess = async (req, res) => {
 
 exports.cutSingleImage = async (req, res) => {
   let { realPositions, imagePath, index } = req.body;
+
+  // *******
+  //   let { realPositions, gpsPositions, imagePath, index } = req.body;
+  // *******
+
   realPositions = JSON.parse(realPositions);
   if (index == 0) {
     await deleteAllFilesFromDirectory("public/images");
@@ -55,6 +60,17 @@ exports.cutSingleImage = async (req, res) => {
     realPositions[i].x2 - realPositions[i].x1,
     realPositions[i].y2 - realPositions[i].y1
   );
+
+  // *******
+  //   await cropImage(
+  //     imagePath,
+  //     `public/attacked_images/result${i}.png`,
+  //     realPositions[i].x1,
+  //     realPositions[i].y1,
+  //     realPositions[i].x2 - realPositions[i].x1,
+  //     realPositions[i].y2 - realPositions[i].y1
+  //   );
+  // ********
 
   res.send({ message: "success" });
 };

@@ -83,7 +83,6 @@ window.onload = function () {
   function setCanvasBackground() {
     console.log("setCanvasBackground");
     var background = new Image();
-    // background.src = "http://i.imgur.com/yf6d9SX.jpg";
     background.src = imageUrl;
 
     background.onload = function () {
@@ -274,9 +273,9 @@ window.onload = function () {
       error: function (error) {
         alert("Error*:" + JSON.stringify(error));
       },
-      complete: function () {
-        window.location.href = "www.google.com";
-      },
+      //   complete: function () {
+      //     window.location.href = "www.google.com";
+      //   },
     });
   }
 
@@ -296,12 +295,11 @@ window.onload = function () {
         alert("Success");
       },
       error: function (error) {
-        
         alert("Error**:" + JSON.stringify(error));
       },
-      complete: function () {
-        window.location.href = "www.google.com";
-      },
+      //   complete: function () {
+      //     window.location.href = "www.google.com";
+      //   },
     });
   }
 
@@ -314,6 +312,9 @@ window.onload = function () {
       dataType: "json",
       data: {
         realPositions: JSON.stringify(realPositions),
+        // ******
+        // gpsPositions: JSON.stringify(gpsPositions),
+        // ******
         imagePath: "public/" + imageUrl,
         index: realPositions.length - 1,
       },
@@ -323,9 +324,9 @@ window.onload = function () {
       error: function (error) {
         alert("Error saving image:" + JSON.stringify(error));
       },
-      complete: function () {
-        window.location.href = "www.google.com";
-      },
+      //   complete: function () {
+      //     window.location.href = "www.google.com";
+      //   },
     });
   }
 
