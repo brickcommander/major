@@ -60,23 +60,6 @@ for b in range(min, max):
         number_keypoints_original = len(kp_1)
     else:
         number_keypoints_original = len(kp_2)
-    
-    # number_keypoints_original = min(len(kp_1), len(kp_2))
-
-    # cv2.imshow("correspondences", original)
-    # cv2.waitKey()
-    # cv2.destroyAllWindows()
-
-    # orb = cv2.SIFT_create()
-    # kp_1, desc_1 = orb.detectAndCompute(original, None)
-
-    # for image_to_compare, title in zip(all_images, titles):
-
-    #     # 2) Check for similarities between the 2 images
-
-    #     kp_2, desc_2 = orb.detectAndCompute(image_to_compare, None)
-
-    #     bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=False)
 
     try:
 
@@ -110,7 +93,7 @@ for b in range(min, max):
 
 with open(org, 'r') as f:
     with open(save_to, 'w') as f1:
-        next(f) # skip header line
+        next(f)
         for line in f:
             f1.write(line)
 
