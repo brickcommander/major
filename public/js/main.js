@@ -304,15 +304,15 @@ window.onload = function () {
   }
 
   function sendPositionToServer() {
-    console.log(`sending to server:${JSON.stringify(gpsPositions)}`);
+    console.log(`sending too server:${JSON.stringify(gpsPositions)}`);
     // e.preventDefault();
     $.ajax({
       type: "POST",
       url: "/cutsingleimage",
       dataType: "json",
       data: {
-        realPosition: realPosition,
-        gpsPosition: gpsPosition,
+        realPositions: realPositions[realPositions.length - 1],
+        gpsPositions: gpsPositions[gpsPositions.length - 1],
         imagePath: "public/" + imageUrl,
         index: realPositions.length - 1,
       },

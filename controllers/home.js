@@ -80,13 +80,7 @@ exports.cutSingleImage = async (req, res) => {
 
   // *******
 
-  console.log(
-    "this function is being called, request variable ",
-    req.body,
-    " response variable\n\n\n **************************\n***********************\n***********************\n\n\n"
-  );
-
-  let { realPosition, gpsPosition, imagePath, index } = req.body;
+  let { realPositions, gpsPositions, imagePath, index } = req.body;
   // *******
 
   //   console.log("hello", req);
@@ -96,31 +90,24 @@ exports.cutSingleImage = async (req, res) => {
   if (index == 0) {
     await deleteAllFilesFromDirectory("public/images");
   }
-  let i = index;
+
   await cropImage(
     imagePath,
-    `public/images/result${i}.png`,
-    realPosition.x,
-    realPosition.y,
-    realPosition.x - realPosition.x,
-    realPosition.y - realPosition.y
+    `public/images/result${index}.png`,
+    realPositions.x1,
+    realPositions.y1,
+    realPositions.x2 - realPositions.x1,
+    realPositions.y2 - realPositions.y1
   );
 
-  // *******
-  console.log(gpsPosition);
-  console.log(realPosition);
-  console.log("*******************************************");
-  if (gpsPosition != undefined && i < gpsPosition.length) {
-    await cropImage(
-      imagePath,
-      `public/attacked_images/result${i}.png`,
-      gpsPosition.x,
-      gpsPosition.y,
-      gpsPosition.x - gpsPosition.x,
-      gpsPosition.y - gpsPosition.y
-    );
-    // console.log("Gps", gpsPosition, index);
-  }
+  await cropImage(
+    imagePath,
+    `public/attacked_images/result${index}.png`,
+    gpsPositions.x1,
+    gpsPositions.y1,
+    gpsPositions.x2 - gpsPositions.x1,
+    gpsPositions.y2 - gpsPositions.y1
+  );
   // ********
 
   res.send({ message: "success" });
@@ -136,7 +123,7 @@ async function cropImage(origin, destination, x, y, width, height) {
             // .resize(256, 256) // resize
             .quality(100) // set JPEG quality
             // .greyscale() // set greyscale
-            .crop(x, y, width, height)
+            .crop(parseInt(x), parseInt(y), parseInt(width), parseInt(height))
             .write(destination) // save
         );
       })
