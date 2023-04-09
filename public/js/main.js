@@ -201,7 +201,6 @@ window.onload = function () {
 
   function moveDown() {
     console.log("moveDown function started");
-
     gpsPosition.y += stepSize;
     realPosition.y += stepSize;
     // rectY += stepSize;
@@ -222,6 +221,7 @@ window.onload = function () {
     let y2 = Math.round((realPosition.y + rectH / 2) * 10) / 10;
     console.log(`rememberRealPosition() - push ${x1},${x2},${y1},${y2}`);
     realPositions.push({ x1, x2, y1, y2 });
+    console.log(realPositions.length, gpsPositions.length);
     AddOneToframesCounter();
     sendPositionToServer();
   }
@@ -231,7 +231,7 @@ window.onload = function () {
     let x2 = Math.round((gpsPosition.x + rectW / 2) * 10) / 10;
     let y1 = Math.round((gpsPosition.y - rectH / 2) * 10) / 10;
     let y2 = Math.round((gpsPosition.y + rectH / 2) * 10) / 10;
-    console.log(`rememberGpsPosition() - push ${x1},${x2},${y1},${y2}`);
+    // console.log(`rememberGpsPosition() - push ${x1},${x2},${y1},${y2}`);
     gpsPositions.push({ x1, x2, y1, y2 });
   }
 
@@ -311,10 +311,8 @@ window.onload = function () {
       url: "/cutsingleimage",
       dataType: "json",
       data: {
-        realPositions: JSON.stringify(realPositions),
-        // ******
-        // gpsPositions: JSON.stringify(gpsPositions),
-        // ******
+        realPosition: realPosition,
+        gpsPosition: gpsPosition,
         imagePath: "public/" + imageUrl,
         index: realPositions.length - 1,
       },

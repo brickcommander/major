@@ -41,13 +41,58 @@ exports.finishProcess = async (req, res) => {
 };
 
 exports.cutSingleImage = async (req, res) => {
-  let { realPositions, imagePath, index } = req.body;
+  //   //   let { realPositions, imagePath, index } = req.body;
 
-  // *******
+  //   // *******
   //   let { realPositions, gpsPositions, imagePath, index } = req.body;
+  //   // *******
+
+  //   realPositions = JSON.parse(realPositions);
+  //   if (index == 0) {
+  //     await deleteAllFilesFromDirectory("public/images");
+  //   }
+  //   let i = index;
+  //   await cropImage(
+  //     imagePath,
+  //     `public/images/result${i}.png`,
+  //     realPositions[i].x1,
+  //     realPositions[i].y1,
+  //     realPositions[i].x2 - realPositions[i].x1,
+  //     realPositions[i].y2 - realPositions[i].y1
+  //   );
+
+  //   // *******
+  //   console.log(gpsPositions);
+  //   console.log(realPositions);
+  //   console.log("*******************************************");
+  //   if (gpsPositions != undefined && i < gpsPositions.length) {
+  //     await cropImage(
+  //       imagePath,
+  //       `public/attacked_images/result${i}.png`,
+  //       gpsPositions[i].x1,
+  //       gpsPositions[i].y1,
+  //       gpsPositions[i].x2 - gpsPositions[i].x1,
+  //       gpsPositions[i].y2 - gpsPositions[i].y1
+  //     );
+  //     console.log("Gps", gpsPositions, index);
+  //   }
+  //   // ********
+
   // *******
 
-  realPositions = JSON.parse(realPositions);
+  console.log(
+    "this function is being called, request variable ",
+    req.body,
+    " response variable\n\n\n **************************\n***********************\n***********************\n\n\n"
+  );
+
+  let { realPosition, gpsPosition, imagePath, index } = req.body;
+  // *******
+
+  //   console.log("hello", req);
+
+  //   realPosition = JSON.parse(realPosition);
+  //   gpsPosition = JSON.parse(gpsPosition);
   if (index == 0) {
     await deleteAllFilesFromDirectory("public/images");
   }
@@ -55,21 +100,27 @@ exports.cutSingleImage = async (req, res) => {
   await cropImage(
     imagePath,
     `public/images/result${i}.png`,
-    realPositions[i].x1,
-    realPositions[i].y1,
-    realPositions[i].x2 - realPositions[i].x1,
-    realPositions[i].y2 - realPositions[i].y1
+    realPosition.x,
+    realPosition.y,
+    realPosition.x - realPosition.x,
+    realPosition.y - realPosition.y
   );
 
   // *******
-  //   await cropImage(
-  //     imagePath,
-  //     `public/attacked_images/result${i}.png`,
-  //     realPositions[i].x1,
-  //     realPositions[i].y1,
-  //     realPositions[i].x2 - realPositions[i].x1,
-  //     realPositions[i].y2 - realPositions[i].y1
-  //   );
+  console.log(gpsPosition);
+  console.log(realPosition);
+  console.log("*******************************************");
+  if (gpsPosition != undefined && i < gpsPosition.length) {
+    await cropImage(
+      imagePath,
+      `public/attacked_images/result${i}.png`,
+      gpsPosition.x,
+      gpsPosition.y,
+      gpsPosition.x - gpsPosition.x,
+      gpsPosition.y - gpsPosition.y
+    );
+    // console.log("Gps", gpsPosition, index);
+  }
   // ********
 
   res.send({ message: "success" });
