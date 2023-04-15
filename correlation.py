@@ -23,18 +23,6 @@ save_to_final = 'E:/Major/m2/public/csv/distances_final.csv'
 save_to = 'E:/Major/m2/public/csv/distances2.csv'
 org = 'E:/Major/m2/public/csv/distances.csv'
 
-# for a in range(min, max):
-#     image = cv2.imread(
-#         "E:/Major/m2/public/images/result" + str(a) + ".png",
-#         cv2.IMREAD_GRAYSCALE)
-#     f = "frame_" + str(a)
-#     titles.append(f)
-#     #print(f)
-#     all_images.append(image)
-
-#     if pic_num < max:
-#         pic_num = pic_num + 1
-
 logging.info("finish reading")
 
 correlations = []

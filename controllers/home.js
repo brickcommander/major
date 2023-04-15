@@ -5,10 +5,6 @@ const path = require("path");
 const { Parser } = require("json2csv");
 const { PythonShell } = require("python-shell");
 
-/**
- * GET /
- * Home page.
- */
 exports.index = (req, res) => {
   res.render("home", {
     title: "Home",
@@ -41,52 +37,8 @@ exports.finishProcess = async (req, res) => {
 };
 
 exports.cutSingleImage = async (req, res) => {
-  //   //   let { realPositions, imagePath, index } = req.body;
-
-  //   // *******
-  //   let { realPositions, gpsPositions, imagePath, index } = req.body;
-  //   // *******
-
-  //   realPositions = JSON.parse(realPositions);
-  //   if (index == 0) {
-  //     await deleteAllFilesFromDirectory("public/images");
-  //   }
-  //   let i = index;
-  //   await cropImage(
-  //     imagePath,
-  //     `public/images/result${i}.png`,
-  //     realPositions[i].x1,
-  //     realPositions[i].y1,
-  //     realPositions[i].x2 - realPositions[i].x1,
-  //     realPositions[i].y2 - realPositions[i].y1
-  //   );
-
-  //   // *******
-  //   console.log(gpsPositions);
-  //   console.log(realPositions);
-  //   console.log("*******************************************");
-  //   if (gpsPositions != undefined && i < gpsPositions.length) {
-  //     await cropImage(
-  //       imagePath,
-  //       `public/attacked_images/result${i}.png`,
-  //       gpsPositions[i].x1,
-  //       gpsPositions[i].y1,
-  //       gpsPositions[i].x2 - gpsPositions[i].x1,
-  //       gpsPositions[i].y2 - gpsPositions[i].y1
-  //     );
-  //     console.log("Gps", gpsPositions, index);
-  //   }
-  //   // ********
-
-  // *******
-
   let { realPositions, gpsPositions, imagePath, index } = req.body;
-  // *******
 
-  //   console.log("hello", req);
-
-  //   realPosition = JSON.parse(realPosition);
-  //   gpsPosition = JSON.parse(gpsPosition);
   if (index == 0) {
     await deleteAllFilesFromDirectory("public/images");
   }
@@ -108,7 +60,6 @@ exports.cutSingleImage = async (req, res) => {
     gpsPositions.x2 - gpsPositions.x1,
     gpsPositions.y2 - gpsPositions.y1
   );
-  // ********
 
   res.send({ message: "success" });
 };
@@ -120,9 +71,7 @@ async function cropImage(origin, destination, x, y, width, height) {
         resolve(
           image
             .clone()
-            // .resize(256, 256) // resize
             .quality(100) // set JPEG quality
-            // .greyscale() // set greyscale
             .crop(parseInt(x), parseInt(y), parseInt(width), parseInt(height))
             .write(destination) // save
         );

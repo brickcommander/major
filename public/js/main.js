@@ -12,11 +12,10 @@ window.onload = function () {
   var stepSize = 5; //default , 5 meters per second
 
   var oneMeterInPixels = legendPixels / metersInLegend; //it's 1 meter in the reality
-  var rectW = 100 * oneMeterInPixels; //it's 100 meters in reality (if img resolution is 1280*720 and photo captured in height 1200m)
-  var rectH = 100 * oneMeterInPixels; //it's 100 meters in reality (if img resolution is 1280*720 and photo captured in height 1200m)
+  var rectW = 100 * oneMeterInPixels;
+  var rectH = 100 * oneMeterInPixels;
   console.log(`oneMeterInPixels:${oneMeterInPixels}`);
 
-  // DON'T TOUCH FROM HERE
   $("#controlPanel").hide();
   $("#clickText").hide();
   var canvas = 10; // placeholder
@@ -27,6 +26,8 @@ window.onload = function () {
 
   let realPositions = [];
   let gpsPositions = [];
+
+  var attacked = false;
 
   $("#heightSubmit").on("click", () => {
     stepSize = parseFloat($("#droneSpeedInput").val());
@@ -140,16 +141,19 @@ window.onload = function () {
   }
 
   function drawRealRect() {
+    context.globalAlpha = 0.5;
     if (realPosition.x && realPosition.y) {
       context.beginPath();
       context.lineWidth = 4;
-      context.strokeStyle = "black";
-      context.rect(
+      //   context.strokeStyle = "black";
+      context.fillStyle = "rgba(0, 0, 0, 0.5)";
+      context.fillRect(
         realPosition.x - rectW / 2,
         realPosition.y - rectH / 2,
         rectW,
         rectH
       );
+      // context.globalAlpha(0.5);
       context.stroke();
 
       rememberRealPosition();
@@ -157,11 +161,13 @@ window.onload = function () {
   }
 
   function drawGpsRect() {
+    context.globalAlpha = 0.4;
     if (gpsPosition.x && gpsPosition.y) {
       context.beginPath();
       context.lineWidth = 4;
-      context.strokeStyle = "red";
-      context.rect(
+      //   context.strokeStyle = "red";
+      if (attacked) context.fillStyle = "rgba(255, 99, 71, 0.5)";
+      context.fillRect(
         gpsPosition.x - rectW / 2,
         gpsPosition.y - rectH / 2,
         rectW,
@@ -240,23 +246,8 @@ window.onload = function () {
     var metersY = parseFloat($("#attackMetersY").val()) || 0;
     gpsPosition.x += metersX;
     gpsPosition.y += metersY;
+    if (metersX || metersY) attacked = true;
   });
-
-  // function getUrlFromUploadedImg(input) {
-  //   if (input.files && input.files[0]) {
-  //       var reader = new FileReader();
-
-  //       reader.onload = function (e) {
-  //           $('#preForm').hide();
-  //           imageUrl = e.target.result;
-  //           imageObj.src = imageUrl;
-
-  //           generateCanvas();
-  //           setCanvasBackground();
-  //       }
-  //       reader.readAsDataURL(input.files[0]);
-  //   }
-  // }
 
   function finishProcessByServer() {
     // e.preventDefault();
@@ -273,9 +264,6 @@ window.onload = function () {
       error: function (error) {
         alert("Error*:" + JSON.stringify(error));
       },
-      //   complete: function () {
-      //     window.location.href = "www.google.com";
-      //   },
     });
   }
 
