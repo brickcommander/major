@@ -101,6 +101,8 @@ window.onload = function () {
     gpsPosition.x = event.pageX - this.offsetLeft;
     gpsPosition.y = event.pageY - this.offsetTop;
 
+    attacked = false;
+
     // blank();
     // drawRect();
     drawGpsRect();
@@ -141,7 +143,7 @@ window.onload = function () {
   }
 
   function drawRealRect() {
-    context.globalAlpha = 0.5;
+    context.globalAlpha = 0.7;
     if (realPosition.x && realPosition.y) {
       context.beginPath();
       context.lineWidth = 4;
@@ -161,19 +163,20 @@ window.onload = function () {
   }
 
   function drawGpsRect() {
-    context.globalAlpha = 0.4;
+    context.globalAlpha = 0.6;
     if (gpsPosition.x && gpsPosition.y) {
       context.beginPath();
       context.lineWidth = 4;
-      //   context.strokeStyle = "red";
-      if (attacked) context.fillStyle = "rgba(255, 99, 71, 0.5)";
-      context.fillRect(
-        gpsPosition.x - rectW / 2,
-        gpsPosition.y - rectH / 2,
-        rectW,
-        rectH
-      );
-      context.stroke();
+      if (attacked) {
+        context.fillStyle = "rgba(255, 99, 71, 0.5)";
+        context.fillRect(
+          gpsPosition.x - rectW / 2,
+          gpsPosition.y - rectH / 2,
+          rectW,
+          rectH
+        );
+        context.stroke();
+      }
 
       rememberGpsPosition();
     }
