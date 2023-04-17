@@ -131,15 +131,12 @@ window.onload = function () {
       moveRight();
       controlBtnClicked();
     } else if (e.keyCode == "13") {
-      //enter pressed
       generatePhotos();
     }
   }
 
   function controlBtnClicked() {
     blank();
-    // drawGpsRect();
-    // drawRealRect();
   }
 
   function drawRealRect() {
@@ -147,7 +144,6 @@ window.onload = function () {
     if (realPosition.x && realPosition.y) {
       context.beginPath();
       context.lineWidth = 4;
-      //   context.strokeStyle = "black";
       context.fillStyle = "rgba(0, 0, 0, 0.5)";
       context.fillRect(
         realPosition.x - rectW / 2,

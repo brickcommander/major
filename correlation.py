@@ -28,6 +28,7 @@ logging.info("finish reading")
 correlations = []
 
 for b in range(min, max):
+
     original = cv2.imread(
         "E:/Major/m2/public/attacked_images/result" + str(b) + ".png",
         cv2.IMREAD_GRAYSCALE)
@@ -42,6 +43,7 @@ for b in range(min, max):
     kp_2, desc_2 = orb.detectAndCompute(image_to_compare, None)
 
     bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=False)
+
     # matches = bf.match(desc_1, desc_2)
 
     if len(kp_1) <= len(kp_2):
@@ -66,14 +68,16 @@ for b in range(min, max):
             number_keypoints = len(kp_2)
 
         percentage_similarity = (len(good_points) / number_keypoints_original) * 100
+
+
         print("now frame " + str(b) + " VS " + title + " Similarity: " + str(int(percentage_similarity)) + "%\n")
         
         result = cv2.drawMatches(original, kp_1, image_to_compare, kp_2, good_points, None)
-        # cv2.imshow("result", cv2.resize(result, None, fx=5.8, fy=6.8))
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        cv2.imshow("result", cv2.resize(result, None, fx=5.8, fy=6.8))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
-        correlations.append(percentage_similarity/100.0)
+        correlations.append(1 - percentage_similarity/100.0)
     except:
         percentage_similarity = 0
         print("now frame " + str(b) + " VS " + title + " Similarity: " + str(int(percentage_similarity)) + "%\n")
